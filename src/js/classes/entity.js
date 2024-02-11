@@ -9,42 +9,32 @@ export default class Entity {
 
         this.scale = 1;
         this.collider = false;
-        this.colliderSize = {
-            width: 0,
-            height: 0
-        };
         this.collider_graphic = null;
         this.collidingEntities = [];
 
         this.id = Math.random()
         entities.push(this);
+        this.modules = [];
     }
 
     Update () {
+        this.modules.forEach((x) => x.Update())
+
         if (this.collider && this.collider_graphic) {
             this.collider_graphic.position.x = this.sprite.x;
             this.collider_graphic.position.y = this.sprite.y;
         }
     }
 
-    Move (axis, direction) {
-        this.sprite[axis] += direction * this.speed;
-        this.SavePosition();
+    AddModule (module) {
+        this.modules.push(module);
     }
-
 
     // ============================================================================================================== //
-    SetSpeed (speed) {
-        this.speed = speed;
-    }
-
-    GetSpeed () {
-        return this.speed;
-    }
 
     SetSprite (path) {
         this.sprite = pixi.Sprite.from(path);
-        app.stage.addChild(this.sprite);
+        container.addChild(this.sprite);
         this.SavePosition();
     }
 
@@ -77,20 +67,6 @@ export default class Entity {
         this.SaveSize();
     }
 
-    FaceLeft () {
-        if (this.sprite.scale.x === this.scale) {
-            this.sprite.scale.x = -this.scale
-            this.sprite.position.x += this.sprite.width / 2;
-        }
-    }
-
-    FaceRight () {
-        if (this.sprite.scale.x === -this.scale) {
-            this.sprite.scale.x = this.scale
-            this.sprite.position.x -= this.sprite.width / 2;
-        }
-    }
-
     SetSize (width, height) {
         this.sprite.width = width;
         this.sprite.height = height;
@@ -119,17 +95,9 @@ export default class Entity {
         });
     }
 
-    SetColliderSize (width, height) {
-        this.colliderSize.width = width;
-        this.colliderSize.height = height;
-    }
-
-    GetColliderSize () {
-        return this.colliderSize;
-    }
-
     SetZIndex (zIndex) {
         this.sprite.zIndex = zIndex;
+        container.sortChildren();
     }
 
     Emit (event, value) {
