@@ -19,7 +19,6 @@ export default class Entity {
 
     Update () {
         this.modules.forEach((x) => x.Update())
-
         if (this.collider && this.collider_graphic) {
             this.collider_graphic.position.x = this.sprite.x;
             this.collider_graphic.position.y = this.sprite.y;
@@ -34,6 +33,13 @@ export default class Entity {
 
     SetSprite (path) {
         this.sprite = pixi.Sprite.from(path);
+        container.addChild(this.sprite);
+        this.SavePosition();
+    }
+
+    SetTillingSprite (path, width, height) {
+        const texture = PIXI.Texture.from(path);
+        this.sprite = new PIXI.TilingSprite(texture, width, height);
         container.addChild(this.sprite);
         this.SavePosition();
     }

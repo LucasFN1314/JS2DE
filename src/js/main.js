@@ -2,6 +2,7 @@ import Player from "./classes/player.js";
 import CollisionSystem from "./CollisionSystem.js";
 import Entity from "./classes/entity.js";
 import Animation from "./classes/animation.js";
+import SceneSystem from "./SceneSystem.js";
 
 export default class Main {
     constructor() {
@@ -25,7 +26,7 @@ export default class Main {
         this.player.SetSprite("/src/images/sprites/Player/idle_01.png");
         this.player.SetSpeed(1);
         this.player.SetSize(23, 33)
-        this.player.SetScale(3);
+        this.player.SetScale(2);
         this.player.flipOnMove = true;
         this.player.SetKeys({
             up: "w",
@@ -62,6 +63,7 @@ export default class Main {
         this.CreatePlayer();
 
         let Collision_System = new CollisionSystem();
+        let Scene_System = new SceneSystem(this.player);
 
         let ticker = app.ticker;
         ticker.minFPS = 60;
@@ -69,6 +71,7 @@ export default class Main {
         ticker.add((delta) => {
             this.player.Update();
             Collision_System.Handle();
+            Scene_System.Handle();
 
             for (let i = 0; i < entities.length; i++) {
                 entities[i].Update();

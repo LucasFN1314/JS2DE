@@ -13,9 +13,11 @@ window.app = app;
 window.keys = {};
 window.pressed = {};
 window.entities = [];
+window.scenes = [];
 window.debug = true;
 window.pixi = PIXI;
 window.container = container;
+window.configuration = configuration;
 app.stage.addChild(container);
 
 window.COLLISION_EVENT = "collision";

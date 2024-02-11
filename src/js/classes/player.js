@@ -35,7 +35,7 @@ export default class Player extends Entity {
         if (pressed[this.keys.run]) this.SwitchSpeed();
 
 
-        if(this.moving.x === 0 && this.moving.y === 0) this.current_state = "idle";
+        if(this.moving.x === 0 && this.moving.y === 0) this.current_state = "moving";
         switch (this.current_state) {
             case "moving":
                 this.PlayAnimation("running");
