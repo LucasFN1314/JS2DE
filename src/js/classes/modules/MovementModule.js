@@ -22,6 +22,8 @@ export default class MovementModule extends Module {
         this.entity.flipOnMove = false;
         this.MoveFunctions = {}
 
+        this.entity.Move = this.entity.Move ?? function () {};
+
         this.entity.SetKeys = (keys) => {
             Object.keys(keys).forEach((x) => {
                 this.entity.keys[x] = keys[x];
@@ -68,28 +70,27 @@ export default class MovementModule extends Module {
         }
         this.entity_keys.forEach((x) => {
             if (keys[this.entity.keys[x]] && this.MoveFunctions[x]) {
-                this.MoveFunctions[x].function( this.MoveFunctions[x].self, this.MoveFunctions[x].params);
+                this.MoveFunctions[x].function(this.MoveFunctions[x].self, this.MoveFunctions[x].params);
             }
         })
     }
 
-    HorizontalMove (self, direction) {
+    HorizontalMove(self, direction) {
         self.entity.moving.x = direction;
         self.Move("x", direction);
-        if(!self.entity.flipOnMove) return;
+        if (!self.entity.flipOnMove) return;
         if (self.entity.sprite.scale.x === self.entity.scale && direction === -1) {
             self.entity.sprite.scale.x = -self.entity.scale;
             self.entity.sprite.position.x += self.entity.sprite.width / 2;
-        }
-        else if (self.entity.sprite.scale.x === -self.entity.scale && direction === 1) {
+        } else if (self.entity.sprite.scale.x === -self.entity.scale && direction === 1) {
             self.entity.sprite.scale.x = self.entity.scale;
             self.entity.sprite.position.x -= self.entity.sprite.width / 2;
         }
     }
 
-    VerticalMove (self, direction) {
-        self.entity.moving.y = direction;
-        self.Move("y", direction);
+    VerticalMove(self, direction) {
+        /*self.entity.moving.y = direction;
+        self.Move("y", direction);*/
     }
 
     Move(axis, direction) {

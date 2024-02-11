@@ -4,7 +4,8 @@ export default class SceneSystem {
     constructor(player) {
         this.player = player;
         this.current_scene = "test_room";
-        let test_room = new TestRoom(player);
+
+        let test_room = new TestRoom(1);
     }
 
     Handle () {

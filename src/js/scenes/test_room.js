@@ -1,40 +1,89 @@
 import Entity from "../classes/entity.js";
+import Chunk from "../classes/scenes/chunk.js";
 
 export default class TestRoom {
 
-    constructor(player) {
+    constructor(size) {
         this.name = "test_room";
         this.load = false;
-
-       /* floor.SetSprite("/src/images/sprites/Player/master.png");
-        floor.SetSize(23, 33)
-        floor.SetPosition(0, 0)
-        floor.UseCollider();*/
-
-        this.y_player_position = configuration.screen.height - 25 - player.sprite._height;
-        this.x_player_position = 0;
-
+        this.size = size;
+        this.chunk_width = 10;
+        this.chunk_height = 3;
+        this.sprite_size = 33;
         window.scenes[this.name] = this;
+
+        let entity = new Entity();
+        entity.SetSprite("/src/images/sprites/Player/idle_01.png");
+        entity.SetSize(20, 33)
+        entity.SetScale(2)
+        entity.SetZIndex(1);
+        entity.UseCollider();
+
+        this.chunks = [];
+        this.chunk_entities = [
+            {
+                chunk: 0,
+                entities: [
+                    {
+                        entity: entity,
+                        position: {
+                            x: 10,
+                            y: 1
+                        },
+                        direction: -1
+                    },
+                    {
+                        entity: player,
+                        position: {
+                            x: 1,
+                            y: 1
+                        },
+                        direction: 1
+                    },
+                ]
+            }
+        ];
     }
 
     Load(player) {
         this.load = true;
-        this.floor = new Entity();
+        this.GenerateChunks();
+    }
 
-        this.floor.SetTillingSprite("/src/images/sprites/Scenes/grass_01.png", configuration.screen.width, 33);
-        this.floor.SetSize(5000, 33)
-        this.floor.SetPosition(0, configuration.screen.height - 33)
-        this.floor.UseCollider();
-        this.floor.SetZIndex(1);
+    GenerateChunks() {
+        for (let chunk = 0; chunk < this.size; chunk++) {
+            let _chunk = new Chunk({
+                    width: this.chunk_width * this.size,
+                    height: this.chunk_height
+                },
+                {
+                    x: chunk * (this.chunk_width * this.sprite_size),
+                    y: configuration.screen.height - this.chunk_height
+                },
+                this.sprite_size
+            );
 
-        player.SetPosition( this.x_player_position, this.y_player_position );
+            let cEntities = [];
+
+            this.chunk_entities.forEach((x) => {
+                if(x.chunk === chunk) {
+                    x.entities.forEach((e) => {
+                        cEntities.push(e);
+                    });
+                }
+            })
+            _chunk.SetEntities(cEntities)
+            _chunk.SetFloorSprite("/src/images/sprites/Scenes/grass_01.png", this.sprite_size)
+            _chunk.DrawEntities();
+            this.chunks.push(_chunk);
+        }
     }
 
     Unload() {
 
     }
 
-    Update () {
-        this.floor.sprite.x -=.8;
+    Update() {
+        // this.floor.sprite.x -=.8;
     }
 }

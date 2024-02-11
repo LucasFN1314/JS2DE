@@ -3,6 +3,7 @@ import CollisionSystem from "./CollisionSystem.js";
 import Entity from "./classes/entity.js";
 import Animation from "./classes/animation.js";
 import SceneSystem from "./SceneSystem.js";
+import MovementModule from "./classes/modules/MovementModule.js";
 
 export default class Main {
     constructor() {
@@ -41,21 +42,13 @@ export default class Main {
             (collided) => {
             },
             (collided) => {
-                console.log("COLLIDING")
+                console.log("COLLIDING", collided)
             },
             (collided) => {
                 console.log("COLLIDING EXIT")
             }
         );
-
-
-        let demo = new Entity();
-        demo.SetSprite("/src/images/sprites/Player/idle_01.png");
-        demo.SetSize(23, 33)
-        demo.SetScale(3);
-        demo.SetZIndex(1);
-        demo.SetPosition(100, 100)
-        demo.UseCollider();
+        window.player = this.player;
     }
 
     Init() {

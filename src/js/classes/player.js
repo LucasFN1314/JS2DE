@@ -6,15 +6,14 @@ import Animation from "./animation.js";
 export default class Player extends Entity {
     constructor() {
         super();
-        this.animations = [];
         this.speedMode = 1;
 
         this.Init();
     }
 
     Init () {
-        this.AddModule(new MovementModule(this))
         this.AddModule((new AnimationModule(this)))
+        this.AddModule(new MovementModule(this))
 
         let idle_animation = new Animation(this);
         idle_animation.name = "idle";
@@ -35,7 +34,7 @@ export default class Player extends Entity {
         if (pressed[this.keys.run]) this.SwitchSpeed();
 
 
-        if(this.moving.x === 0 && this.moving.y === 0) this.current_state = "moving";
+        if(this.moving.x === 0 && this.moving.y === 0) this.current_state = "idle";
         switch (this.current_state) {
             case "moving":
                 this.PlayAnimation("running");
