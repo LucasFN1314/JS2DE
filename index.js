@@ -18,6 +18,7 @@ window.debug = true;
 window.pixi = PIXI;
 window.container = container;
 window.configuration = configuration;
+window.polling_sprites = [];
 app.stage.addChild(container);
 
 window.COLLISION_EVENT = "collision";

@@ -1,6 +1,10 @@
 export const configuration = {
   screen: {
-    width: 640,
-    height: 480
+    width: 800,
+    height: 600
+  },
+  sprite: {
+    width: 32,
+    height: 32
   }
 }

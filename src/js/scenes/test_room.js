@@ -1,6 +1,6 @@
 import Entity from "../classes/entity.js";
 import Chunk from "../classes/scenes/chunk.js";
-
+import {configuration} from "../../../configuration.js";
 export default class TestRoom {
 
     constructor(size) {
@@ -12,71 +12,41 @@ export default class TestRoom {
         this.sprite_size = 33;
         window.scenes[this.name] = this;
 
-        let entity = new Entity();
-        entity.SetSprite("/src/images/sprites/Player/idle_01.png");
-        entity.SetSize(20, 33)
-        entity.SetScale(2)
-        entity.SetZIndex(1);
-        entity.UseCollider();
-
         this.chunks = [];
-        this.chunk_entities = [
-            {
-                chunk: 0,
-                entities: [
-                    {
-                        entity: entity,
-                        position: {
-                            x: 10,
-                            y: 1
-                        },
-                        direction: -1
-                    },
-                    {
-                        entity: player,
-                        position: {
-                            x: 1,
-                            y: 1
-                        },
-                        direction: 1
-                    },
-                ]
-            }
-        ];
     }
 
     Load(player) {
+        this.CreateChunk();
         this.load = true;
-        this.GenerateChunks();
     }
 
-    GenerateChunks() {
-        for (let chunk = 0; chunk < this.size; chunk++) {
-            let _chunk = new Chunk({
-                    width: this.chunk_width * this.size,
-                    height: this.chunk_height
-                },
-                {
-                    x: chunk * (this.chunk_width * this.sprite_size),
-                    y: configuration.screen.height - this.chunk_height
-                },
-                this.sprite_size
-            );
+    GeneratePolling() {
+        // || Need 3 chunks, each one of the screen's size
+        // || Each chunk has width divided by sprite size
+        // || and a height of 40 blocks
+    }
 
-            let cEntities = [];
+    LoadChunks() {
 
-            this.chunk_entities.forEach((x) => {
-                if(x.chunk === chunk) {
-                    x.entities.forEach((e) => {
-                        cEntities.push(e);
-                    });
-                }
-            })
-            _chunk.SetEntities(cEntities)
-            _chunk.SetFloorSprite("/src/images/sprites/Scenes/grass_01.png", this.sprite_size)
-            _chunk.DrawEntities();
-            this.chunks.push(_chunk);
+    }
+
+    CreateChunk() {
+        let material = "debug_tile";
+        let width = configuration.screen.width / configuration.sprite.width;
+        let init_height = Math.floor((configuration.screen.height - (configuration.screen.height / 2)) / configuration.sprite.height);
+        let chunk_under_height = 7
+        let blocks = [];
+
+        for (let x = 0; x < width; x ++) {
+            for (let y = init_height; y<init_height + chunk_under_height; y++) {
+                let tile = new Entity();
+                tile.SetSprite("/src/images/sprites/Textures/debug_tile.png");
+                tile.SetPosition(x * configuration.sprite.width, y * configuration.sprite.height);
+
+                blocks.push(tile);
+            }
         }
+        console.log(blocks)
     }
 
     Unload() {
